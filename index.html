@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hassanfarzeen26 — Forever Yours 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Nastaliq+Urdu&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #d4af37;
+    --rose-gold: #c9a96e;
+    --burgundy: #4a1a2c;
+    --blush: #f5e6e0;
+    --ivory: #faf6f1;
+    --dark: #1a0a0a;
+  }
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background: linear-gradient(180deg, #1a0a0a 0%, #2d1b1b 30%, #1a0a0a 100%);
+    color: var(--blush);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .heart {
+    position: fixed; font-size: 20px; opacity: 0;
+    animation: floatUp 8s infinite ease-in;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  }
+  .hero {
+    text-align: center; padding: 60px 20px 40px;
+    position: relative; z-index: 1;
+  }
+  .hero h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(48px, 8vw, 80px);
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(212,175,55,0.3);
+    margin-bottom: 10px;
+  }
+  .hero .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; letter-spacing: 4px;
+    color: var(--rose-gold); text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .hero .date-line {
+    margin-top: 12px; font-size: 16px;
+    color: #a08060; font-style: italic;
+  }
+  .section {
+    max-width: 700px; margin: 30px auto;
+    background: rgba(212,175,55,0.04);
+    border-radius: 24px; padding: 28px;
+    border: 1px solid rgba(212,175,55,0.12);
+    position: relative; z-index: 1;
+    backdrop-filter: blur(10px);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--rose-gold);
+    text-align: center; margin-bottom: 20px;
+    font-weight: 400;
+  }
+  .time-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; text-align: center;
+  }
+  .time-box {
+    background: rgba(0,0,0,0.35);
+    border-radius: 16px; padding: 16px 8px;
+    border: 1px solid rgba(212,175,55,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .time-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(212,175,55,0.1);
+  }
+  .time-box .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 600;
+    color: var(--gold);
+  }
+  .time-box .label {
+    font-size: 11px; color: #a08060;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-top: 6px;
+  }
+  .seconds-line {
+    text-align: center; margin-top: 16px;
+    color: #c9a96e; font-size: 15px;
+    font-style: italic; letter-spacing: 1px;
+  }
+  .countdown-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; text-align: center;
+  }
+  .cd-box {
+    background: rgba(0,0,0,0.35);
+    border-radius: 16px; padding: 18px 6px;
+    border: 1px solid rgba(212,175,55,0.08);
+  }
+  .cd-box .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 600;
+    color: var(--gold);
+  }
+  .cd-box .label {
+    font-size: 10px; color: #a08060;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-top: 6px;
+  }
+  .anniversary-text {
+    text-align: center; margin-top: 16px;
+    color: #c9a96e; font-size: 14px;
+    font-style: italic;
+  }
+  .daily-content {
+    text-align: center; padding: 20px;
+  }
+  .content-type-badge {
+    display: inline-block;
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.2);
+    color: var(--gold);
+    padding: 6px 18px; border-radius: 20px;
+    font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .poem-text {
+    font-family: 'Noto Nastaliq Urdu', 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 4vw, 26px);
+    line-height: 2.2; color: var(--blush);
+    direction: rtl; margin-bottom: 12px;
+  }
+  .poem-english {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 3.5vw, 22px);
+    line-height: 1.8; color: #d4c4b0;
+    font-style: italic; margin-bottom: 12px;
+  }
+  .poem-author {
+    color: var(--rose-gold); font-size: 14px;
+    margin-top: 8px; opacity: 0.8;
+  }
+  .dedicate-btn {
+    margin-top: 20px;
+    background: linear-gradient(135deg, var(--gold), var(--rose-gold));
+    color: #1a0a0a; border: none;
+    padding: 12px 32px; border-radius: 30px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; cursor: pointer;
+    letter-spacing: 2px; text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .dedicate-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(212,175,55,0.3);
+  }
+  .gallery-controls {
+    display: flex; justify-content: center;
+    gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: rgba(212,175,55,0.08);
+    border: 1px solid rgba(212,175,55,0.15);
+    color: var(--rose-gold); padding: 8px 18px;
+    border-radius: 20px; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; transition: all 0.3s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(212,175,55,0.2);
+    color: var(--gold); border-color: var(--gold);
+  }
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .gallery-item {
+    aspect-ratio: 1; border-radius: 16px;
+    overflow: hidden; position: relative;
+    cursor: pointer; border: 1px solid rgba(212,175,55,0.1);
+    transition: transform 0.3s;
+  }
+  .gallery-item:hover { transform: scale(1.03); }
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: all 0.5s;
+  }
+  .gallery-item.bw img { filter: grayscale(100%) contrast(1.1); }
+  .gallery-item.enhanced img { filter: contrast(1.15) saturate(1.1) brightness(1.05); }
+  .gallery-item.vintage img { filter: sepia(0.3) contrast(0.95) brightness(1.1); }
+  .upload-area {
+    border: 2px dashed rgba(212,175,55,0.2);
+    border-radius: 16px; padding: 30px;
+    text-align: center; color: #a08060;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .upload-area:hover {
+    border-color: var(--gold);
+    background: rgba(212,175,55,0.05);
+  }
+  .love-message {
+    text-align: center; padding: 20px;
+    font-size: clamp(16px, 3vw, 22px);
+    color: #e8d5c4; line-height: 1.8;
+    font-style: italic;
+  }
+  .love-counter {
+    display: flex; justify-content: center;
+    gap: 24px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .love-stat {
+    text-align: center;
+  }
+  .love-stat .big {
+    font-family: 'Great Vibes', cursive;
+    font-size: 36px; color: var(--gold);
+  }
+  .love-stat .small {
+    font-size: 11px; color: #a08060;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .music-player {
+    display: flex; align-items: center;
+    gap: 16px; padding: 16px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 16px; margin-top: 16px;
+  }
+  .play-btn {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--rose-gold));
+    border: none; color: #1a0a0a;
+    font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s;
+  }
+  .play-btn:hover { transform: scale(1.1); }
+  .track-info { flex: 1; }
+  .track-title { color: var(--gold); font-size: 16px; }
+  .track-artist { color: #a08060; font-size: 13px; }
+  .progress-bar {
+    height: 4px; background: rgba(212,175,55,0.15);
+    border-radius: 2px; margin-top: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--rose-gold));
+    border-radius: 2px; transition: width 0.3s;
+  }
+  .footer {
+    text-align: center; padding: 40px 20px;
+    color: #a08060; font-size: 14px;
+    position: relative; z-index: 1;
+  }
+  .footer .heart-beat {
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.3); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+  }
+  @media (max-width: 500px) {
+    .time-grid { grid-template-columns: repeat(2, 1fr); }
+    .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+    .section { margin: 20px 12px; padding: 20px; }
+  }
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    animation: fadeIn 0.8s forwards;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  const hearts = ['💕','💖','💗','💓','💝','🌹','✨'];
+  for(let i=0; i<15; i++){
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.animationDelay = Math.random()*8 + 's';
+    h.style.animationDuration = (6+Math.random()*6) + 's';
+    h.style.fontSize = (14+Math.random()*16) + 'px';
+    document.body.appendChild(h);
+  }
+})();
+</script>
+
+<div class="hero fade-in">
+  <h1>Forever Yours</h1>
+  <p class="subtitle">A Love That Grows Every Day</p>
+  <p class="date-line">United in Love — 26 December 2024 💍</p>
+</div>
+
+<div class="section fade-in">
+  <h2 class="section-title">✨ Time We've Shared ✨</h2>
+  <div class="time-grid">
+    <div class="time-box"><div class="num" id="t-years">0</div><div class="label">Years</div></div>
+    <div class="time-box"><div class="num" id="t-months">0</div><div class="label">Months</div></div>
+    <div class="time-box"><div class="num" id="t-weeks">0</div><div class="label">Weeks</div></div>
+    <div class="time-box"><div class="num" id="t-days">0</div><div class="label">Days</div></div>
+    <div class="time-box"><div class="num" id="t-hours">0</div><div class="label">Hours</div></div>
+    <div class="time-box"><div class="num" id="t-minutes">0</div><div class="label">Minutes</div></div>
+  </div>
+  <div class="seconds-line" id="t-seconds">0 seconds of pure love 💕</div>
+</div>
+
+<div class="section fade-in">
+  <h2 class="section-title">🌹 Next Anniversary 🌹</h2>
+  <div class="countdown-grid">
+    <div class="cd-box"><div class="num" id="cd-days">00</div><div class="label">Days</div></div>
+    <div class="cd-box"><div class="num" id="cd-hours">00</div><div class="label">Hours</div></div>
+    <div class="cd-box"><div class="num" id="cd-minutes">00</div><div class="label">Minutes</div></div>
+    <div class="cd-box"><div class="num" id="cd-seconds">00</div><div class="label">Seconds</div></div>
+  </div>
+  <p class="anniversary-text" id="anniversary-label">Counting down to our special day...</p>
+</div>
+
+<div class="section fade-in">
+  <h2 class="section-title">💌 Daily Dose of Love 💌</h2>
+  <div class="daily-content">
+    <span class="content-type-badge" id="content-badge">Today's Poetry</span>
+    <div id="daily-text"></div>
+    <p class="poem-author" id="daily-author"></p>
+    <button class="dedicate-btn" onclick="nextContent()">✨ Next Dedication</button>
+  </div>
+</div>
+
+<div class="section fade-in">
+  <h2 class="section-title">📸 Our Memories 📸</h2>
+  <div class="gallery-controls">
+    <button class="filter-btn active" onclick="setFilter('normal')">Original</button>
+    <button class="filter-btn" onclick="setFilter('bw')">Black & White</button>
+    <button class="filter-btn" onclick="setFilter('enhanced')">Enhanced</button>
+    <button class="filter-btn" onclick="setFilter('vintage')">Vintage</button>
+  </div>
+  <div class="gallery-grid" id="gallery">
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+      <div style="font-size: 32px; margin-bottom: 8px;">📷</div>
+      <div>Click to upload your photos</div>
+      <div style="font-size: 12px; margin-top: 6px; opacity: 0.6;">Add your beautiful memories here</div>
+    </div>
+  </div>
+  <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleUpload(event)">
+</div>
+
+<div class="section fade-in">
+  <h2 class="section-title">💝 My Heart Speaks 💝</h2>
+  <div class="love-message" id="love-message"></div>
+  <div class="love-counter">
+    <div class="love-stat"><div class="big" id="stat-memories">∞</div><div class="small">Memories</div></div>
+    <div class="love-stat"><div class="big" id="stat-reasons">1000+</div><div class="small">Reasons I Love You</div></div>
+    <div class="love-stat"><div class="big" id="stat-forever">∞</div><div class="small">Forever & Always</div></div>
+  </div>
+</div>
+
+<div class="section fade-in">
+  <h2 class="section-title">🎵 Song For You 🎵</h2>
+  <div class="music-player">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="track-info">
+      <div class="track-title" id="song-title">Tum Hi Ho</div>
+      <div class="track-artist" id="song-artist">Arijit Singh — Dedicated with Love</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:14px; color:#a08060; font-size:13px; font-style:italic;" id="song-lyrics">
+    "Teri meri, meri teri prem kahani hai mushkil..."
+  </div>
+</div>
+
+<div class="footer fade-in">
+  <p>Made with <span class="heart-beat">💖</span> for the love of my life</p>
+  <p style="margin-top:8px; font-size:12px; opacity:0.6;">hassanfarzeen26 — Forever & Always</p>
+</div>
+
+<script>
+const weddingDate = new Date('2024-12-26T00:00:00');
+
+function pad(n){ return n<10 ? '0'+n : n; }
+
+function updateTogether(){
+  const now = new Date();
+  let diff = now - weddingDate;
+  if(diff < 0) diff = 0;
+  
+  const totalSeconds = Math.floor(diff/1000);
+  const totalMinutes = Math.floor(totalSeconds/60);
+  const totalHours = Math.floor(totalMinutes/60);
+  const totalDays = Math.floor(totalHours/24);
+  const totalWeeks = Math.floor(totalDays/7);
+  
+  let years = now.getFullYear() - weddingDate.getFullYear();
+  let months = now.getMonth() - weddingDate.getMonth();
+  let days = now.getDate() - weddingDate.getDate();
+  
+  if(days < 0){ months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if(months < 0){ years--; months += 12; }
+  
+  document.getElementById('t-years').textContent = years;
+  document.getElementById('t-months').textContent = months;
+  document.getElementById('t-weeks').textContent = totalWeeks;
+  document.getElementById('t-days').textContent = totalDays;
+  document.getElementById('t-hours').textContent = totalHours;
+  document.getElementById('t-minutes').textContent = totalMinutes;
+  document.getElementById('t-seconds').textContent = totalSeconds.toLocaleString() + ' seconds of pure love 💕';
+}
+
+function updateCountdown(){
+  const now = new Date();
+  let next = new Date(now.getFullYear(), 11, 26);
+  if(now > next) next = new Date(now.getFullYear()+1, 11, 26);
+  
+  const which = next.getFullYear() - weddingDate.getFullYear();
+  const suffix = which===1 ? 'st' : which===2 ? 'nd' : which===3 ? 'rd' : 'th';
+  document.getElementById('anniversary-label').textContent = 
+    'Counting down to our ' + which + suffix + ' Anniversary 💍';
+  
+  const diff = next - now;
+  document.getElementById('cd-days').textContent = pad(Math.floor(diff/(1000*60*60*24)));
+  document.getElementById('cd-hours').textContent = pad(Math.floor((diff%(1000*60*60*24))/(1000*60*60)));
+  document.getElementById('cd-minutes').textContent = pad(Math.floor((diff%(1000*60*60))/(1000*60)));
+  document.getElementById('cd-seconds').textContent = pad(Math.floor((diff%(1000*60))/1000));
+}
+
+const contents = [
+  {
+    type: 'Urdu Poetry',
+    text: 'تم میری آنکھوں میں بسے ہو،<br>تم میرے دل کی دھڑکن ہو،<br>تمہاری محبت ہی میرا ایمان ہے،<br>تمہارے بغیر میں ادھورا ہوں۔',
+    author: '— Dedicated to My Soulmate',
+    badge: 'Today\'s Poetry'
+  },
+  {
+    type: 'English Poem',
+    text: 'In your eyes I find my home,<br>In your smile I see my sun,<br>Every moment spent with you,<br>Feels like life has just begun.',
+    author: '— Written with Love',
+    badge: 'Today\'s Poem'
+  },
+  {
+    type: 'Song Dedication',
+    text: '"Tum hi ho ab tum hi ho,<br>Zindagi ab tum hi ho..."<br><br>Every lyric reminds me of you.',
+    author: '— Arijit Singh | Aashiqui 2',
+    badge: 'Song Dedication'
+  },
+  {
+    type: 'Love Letter',
+    text: 'My Dearest Love,<br><br>Words fail me when I try to express how much you mean to me. You are my peace, my joy, my everything. I promise to love you more with each passing day.',
+    author: '— Yours Forever',
+    badge: 'Love Letter'
+  },
+  {
+    type: 'Urdu Ghazal',
+    text: 'محبت میں نہیں ہے فرق جینے اور مرنے کا،<br>اسی کو دیکھ کر جیتے ہیں جس کا فری دیکھ کر مرتے ہیں۔',
+    author: '— Mirza Ghalib | Dedicated to You',
+    badge: 'Urdu Ghazal'
+  },
+  {
+    type: 'English Quote',
+    text: 'I swear I couldn\'t love you more than I do right now, and yet I know I will tomorrow.',
+    author: '— Leo Christopher',
+    badge: 'Love Quote'
+  }
+];
+
+let currentContent = Math.floor(Math.random() * contents.length);
+
+function renderContent(){
+  const c = contents[currentContent];
+  document.getElementById('content-badge').textContent = c.badge;
+  document.getElementById('daily-text').innerHTML = '<div class="' + (c.type.includes('Urdu') ? 'poem-text' : 'poem-english') + '">' + c.text + '</div>';
+  document.getElementById('daily-author').textContent = c.author;
+}
+
+function nextContent(){
+  currentContent = (currentContent + 1) % contents.length;
+  renderContent();
+}
+
+const today = new Date().getDate();
+currentContent = today % contents.length;
+renderContent();
+
+const loveMessages = [
+  'You are the most beautiful chapter in the story of my life.',
+  'If I had a flower for every time I thought of you, I could walk through my garden forever.',
+  'You make my heart smile in ways no one else ever could.',
+  'In a sea of people, my eyes will always search for you.',
+  'I didn\'t choose you, my heart did.',
+  'You are my today and all of my tomorrows.',
+  'Every love story is beautiful, but ours is my favorite.',
+  'I fall in love with you a little more every single day.'
+];
+document.getElementById('love-message').textContent = loveMessages[today % loveMessages.length];
+
+let currentFilter = 'normal';
+function setFilter(filter){
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.className = 'gallery-item ' + filter;
+  });
+}
+
+function handleUpload(e){
+  const files = e.target.files;
+  const gallery = document.getElementById('gallery');
+  if(gallery.querySelector('.upload-area')){
+    gallery.innerHTML = '';
+  }
+  for(let file of files){
+    const reader = new FileReader();
+    reader.onload = function(evt){
+      const div = document.createElement('div');
+      div.className = 'gallery-item ' + currentFilter;
+      div.innerHTML = '<img src="' + evt.target.result + '" alt="Memory">';
+      gallery.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  }
+  const uploadArea = document.createElement('div');
+  uploadArea.className = 'upload-area';
+  uploadArea.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">📷</div><div>Click to upload more</div>';
+  uploadArea.onclick = () => document.getElementById('fileInput').click();
+  gallery.appendChild(uploadArea);
+}
+
+const songs = [
+  { title: 'Tum Hi Ho', artist: 'Arijit Singh', lyrics: '"Teri meri, meri teri prem kahani hai mushkil..."' },
+  { title: 'Perfect', artist: 'Ed Sheeran', lyrics: '"I found a love for me, darling just dive right in..."' },
+  { title: 'Mere Haath Mein', artist: 'Sonu Nigam', ly
