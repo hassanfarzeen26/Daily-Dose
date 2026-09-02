@@ -388,17 +388,17 @@ function updateTogether(){
     var now = new Date();
     var diff = now - weddingDate;
     if(diff < 0) diff = 0;
-    
+
     var totalSeconds = Math.floor(diff / 1000);
     var totalMinutes = Math.floor(totalSeconds / 60);
     var totalHours = Math.floor(totalMinutes / 60);
     var totalDays = Math.floor(totalHours / 24);
     var totalWeeks = Math.floor(totalDays / 7);
-    
+
     var years = now.getFullYear() - weddingDate.getFullYear();
     var months = now.getMonth() - weddingDate.getMonth();
     var days = now.getDate() - weddingDate.getDate();
-    
+
     if(days < 0){
       months--;
       days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
@@ -407,7 +407,7 @@ function updateTogether(){
       years--;
       months += 12;
     }
-    
+
     document.getElementById('t-years').textContent = years;
     document.getElementById('t-months').textContent = months;
     document.getElementById('t-weeks').textContent = totalWeeks;
@@ -423,12 +423,12 @@ function updateCountdown(){
     var now = new Date();
     var next = new Date(now.getFullYear(), 11, 26);
     if(now > next) next = new Date(now.getFullYear() + 1, 11, 26);
-    
+
     var which = next.getFullYear() - weddingDate.getFullYear();
     var suffix = which === 1 ? 'st' : which === 2 ? 'nd' : which === 3 ? 'rd' : 'th';
-    document.getElementById('anniversary-label').textContent = 
+    document.getElementById('anniversary-label').textContent =
       'Counting down to our ' + which + suffix + ' Anniversary';
-    
+
     var diff = next - now;
     document.getElementById('cd-days').textContent = pad(Math.floor(diff / (1000 * 60 * 60 * 24)));
     document.getElementById('cd-hours').textContent = pad(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
@@ -551,4 +551,44 @@ function handleUpload(e){
     uploadArea.className = 'upload-area';
     uploadArea.innerHTML = "<div style='font-size:28px;margin-bottom:6px;'>&#128247;</div><div>Click to upload more</div>";
     uploadArea.onclick = function(){
-      document.getElementById('
+      document.getElementById('fileInput').click();
+    };
+    gallery.appendChild(uploadArea);
+  } catch(e) {}
+}
+
+var isPlaying = false;
+var progressInterval = null;
+
+function togglePlay(){
+  try {
+    var btn = document.getElementById('playBtn');
+    var progress = document.getElementById('progress');
+    isPlaying = !isPlaying;
+
+    if(isPlaying){
+      btn.innerHTML = '&#10074;&#10074;'; // pause icon
+      var width = parseFloat(progress.style.width) || 0;
+      progressInterval = setInterval(function(){
+        width += 0.5;
+        if(width >= 100){
+          width = 0;
+        }
+        progress.style.width = width + '%';
+      }, 300);
+    } else {
+      btn.innerHTML = '&#9654;'; // play icon
+      clearInterval(progressInterval);
+    }
+  } catch(e) {}
+}
+
+// Kick everything off
+updateTogether();
+updateCountdown();
+setInterval(updateTogether, 1000);
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
