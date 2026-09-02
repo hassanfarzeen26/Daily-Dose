@@ -24,7 +24,7 @@
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Forever Yours",
-  "alternateName": ["hassanfarzeen26", "hassanfarzeen", "hassanChingu", "Chingu143", "forever-yours"],
+  "alternateName": ["hassanfarzeen26", "hassanfarzeen", "NaeChingu", "Chingu143", "forever-yours"],
   "description": "A romantic love page created by hassanfarzeen26 for hassanChingu and Chingu143 — Forever Yours since 26 December 2024.",
   "author": {
     "@type": "Person",
@@ -239,14 +239,29 @@
     border-radius: 50%; pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
     background: radial-gradient(circle, rgba(217,138,148,0.18) 0%, rgba(201,162,75,0.06) 40%, transparent 70%);
-    transition: left 0.08s ease-out, top 0.08s ease-out;
     mix-blend-mode: screen;
+    transition: left 0.08s ease-out, top 0.08s ease-out, opacity 0.25s ease;
+    opacity: 1;
   }
   .cursor-heart {
     position: fixed; pointer-events: none; z-index: 9999;
     font-size: 18px; transform: translate(-50%, -50%);
     filter: drop-shadow(0 0 8px rgba(217,138,148,0.8));
-    transition: transform 0.1s ease-out;
+    transition: opacity 0.25s ease, transform 0.1s ease-out;
+    opacity: 1;
+  }
+  @media (pointer: coarse) {
+    .cursor-glow {
+      width: 280px; height: 280px;
+      opacity: 0;
+    }
+    .cursor-heart {
+      font-size: 26px;
+      opacity: 0;
+    }
+    body.touch-active .cursor-glow,
+    body.touch-active .cursor-heart { opacity: 1; }
+    .cursor-trail { font-size: 16px; }
   }
   .cursor-trail {
     position: fixed; pointer-events: none; z-index: 9997;
@@ -600,22 +615,48 @@
   .yt-wrap {
     width: 230px; aspect-ratio: 16 / 9; border-radius: 12px;
     overflow: hidden; border: 1px solid rgba(212,175,55,0.28);
-    flex-shrink: 0; background: #000;
+    flex-shrink: 0; background: #000; position: relative;
   }
   .yt-wrap:fullscreen,
-  .yt-wrap:-webkit-full-screen {
+  .yt-wrap:-webkit-full-screen,
+  .yt-wrap:-moz-full-screen,
+  .yt-wrap:-ms-fullscreen {
     width: 100vw; height: 100vh; max-width: none;
     border-radius: 0; border: none; aspect-ratio: auto;
     display: flex; align-items: center; justify-content: center;
     background: #000;
   }
   .yt-wrap:fullscreen #yt-player,
-  .yt-wrap:-webkit-full-screen #yt-player {
+  .yt-wrap:-webkit-full-screen #yt-player,
+  .yt-wrap:-moz-full-screen #yt-player,
+  .yt-wrap:-ms-fullscreen #yt-player {
     width: 100% !important; height: 100% !important;
+    flex: 1;
   }
   .yt-wrap:fullscreen iframe,
-  .yt-wrap:-webkit-full-screen iframe {
+  .yt-wrap:-webkit-full-screen iframe,
+  .yt-wrap:-moz-full-screen iframe,
+  .yt-wrap:-ms-fullscreen iframe {
     width: 100% !important; height: 100% !important;
+  }
+  .fs-exit-btn {
+    display: none; position: absolute;
+    top: 14px; right: 14px; z-index: 20;
+    background: rgba(23,10,12,0.75);
+    border: 1px solid rgba(217,138,148,0.5);
+    color: var(--gold-soft); padding: 8px 16px;
+    border-radius: 20px; font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 13px; cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .fs-exit-btn:hover { background: rgba(122,31,43,0.85); transform: scale(1.04); }
+  .yt-wrap:fullscreen .fs-exit-btn,
+  .yt-wrap:-webkit-full-screen .fs-exit-btn,
+  .yt-wrap:-moz-full-screen .fs-exit-btn,
+  .yt-wrap:-ms-fullscreen .fs-exit-btn { display: block; }
+  .track-count {
+    font-size: 11px; color: #8a6a52; font-style: italic; margin-top: 6px;
   }
   #yt-player, .yt-wrap iframe { width: 100% !important; height: 100% !important; }
   .track-info { flex: 1; min-width: 0; }
@@ -681,7 +722,6 @@
     .music-player { flex-direction: column; align-items: center; text-align: center; }
     .player-controls { justify-content: center; flex-wrap: wrap; }
     .yt-wrap { width: 100%; max-width: 300px; }
-    .cursor-glow, .cursor-heart { display: none; }
   }
 </style>
 </head>
@@ -819,16 +859,20 @@
 <div class="section">
   <div class="section-title"><span class="flourish">&#10087;</span><span class="title-text">Our Playlist</span><span class="flourish">&#10087;</span></div>
   <div class="music-player">
-    <div class="yt-wrap" id="ytWrap"><div id="yt-player"></div></div>
+    <div class="yt-wrap" id="ytWrap">
+      <div id="yt-player"></div>
+      <button type="button" class="fs-exit-btn" id="fsExitBtn" onclick="exitFullscreenMode()">&#10697; Exit Fullscreen</button>
+    </div>
     <div class="track-info">
       <div class="track-genre" id="song-genre">Bollywood</div>
       <div class="track-title" id="song-title">&nbsp;</div>
       <div class="track-artist" id="song-artist">&nbsp;</div>
+      <div class="track-count" id="song-count">1 / 100</div>
       <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
       <div class="player-controls">
         <button class="play-btn" id="playBtn" onclick="togglePlay()">&#9654;</button>
         <button class="next-btn" onclick="nextSong()">Next &#9654;&#9654;</button>
-        <button class="fs-btn" onclick="toggleFullscreen()" title="Fullscreen">&#9974;</button>
+        <button class="fs-btn" id="fsBtn" onclick="toggleFullscreen()" title="Fullscreen">&#9974;</button>
       </div>
     </div>
   </div>
@@ -842,6 +886,7 @@
 
 </div><!-- /main-content -->
 
+<script src="forever-yours-songs.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 /* ---------- Heart Locker ---------- */
@@ -969,59 +1014,107 @@
   }
 })();
 
-/* ---------- Cursor magic ---------- */
+/* ---------- Cursor & touch magic ---------- */
 (function(){
   var glow = document.getElementById('cursorGlow');
   var heart = document.getElementById('cursorHeart');
   var trailChars = ['\u2764','\u2665','\u2728','\uD83C\uDF39','\u2726'];
   var lastTrail = 0;
-  var mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  var pointerX = window.innerWidth / 2, pointerY = window.innerHeight / 2;
+  var touchActive = false;
 
-  function onMove(e){
+  function updatePointer(x, y, withTrail){
     if(!document.body.classList.contains('unlocked')) return;
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    document.documentElement.style.setProperty('--cursor-x', mouseX + 'px');
-    document.documentElement.style.setProperty('--cursor-y', mouseY + 'px');
+    pointerX = x;
+    pointerY = y;
+    document.documentElement.style.setProperty('--cursor-x', pointerX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', pointerY + 'px');
     if(glow){
-      glow.style.left = mouseX + 'px';
-      glow.style.top = mouseY + 'px';
+      glow.style.left = pointerX + 'px';
+      glow.style.top = pointerY + 'px';
     }
     if(heart){
-      heart.style.left = mouseX + 'px';
-      heart.style.top = mouseY + 'px';
+      heart.style.left = pointerX + 'px';
+      heart.style.top = pointerY + 'px';
       heart.style.transform = 'translate(-50%, -50%) scale(' + (1 + Math.sin(Date.now() / 300) * 0.08) + ')';
     }
+    if(!withTrail) return;
     var now = Date.now();
-    if(now - lastTrail > 80){
+    var trailDelay = touchActive ? 60 : 80;
+    if(now - lastTrail > trailDelay){
       lastTrail = now;
       var t = document.createElement('div');
       t.className = 'cursor-trail';
       t.textContent = trailChars[Math.floor(Math.random() * trailChars.length)];
-      t.style.left = (mouseX + (Math.random() - 0.5) * 20) + 'px';
-      t.style.top = (mouseY + (Math.random() - 0.5) * 20) + 'px';
+      t.style.left = (pointerX + (Math.random() - 0.5) * 24) + 'px';
+      t.style.top = (pointerY + (Math.random() - 0.5) * 24) + 'px';
       t.style.color = Math.random() > 0.5 ? '#d98a94' : '#e4c785';
       document.body.appendChild(t);
       setTimeout(function(){ t.remove(); }, 1200);
     }
   }
 
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseenter', onMove);
-
-  /* Section-local glow follows cursor inside cards */
-  var sections = document.querySelectorAll('.section');
-  for(var s = 0; s < sections.length; s++){
-    (function(sec){
-      sec.addEventListener('mousemove', function(e){
-        var r = sec.getBoundingClientRect();
-        var lx = ((e.clientX - r.left) / r.width * 100) + '%';
-        var ly = ((e.clientY - r.top) / r.height * 100) + '%';
-        sec.style.setProperty('--local-x', lx);
-        sec.style.setProperty('--local-y', ly);
-      });
-    })(sections[s]);
+  function getTouchPoint(e){
+    if(e.touches && e.touches.length) return e.touches[0];
+    if(e.changedTouches && e.changedTouches.length) return e.changedTouches[0];
+    return null;
   }
+
+  function onMouseMove(e){
+    updatePointer(e.clientX, e.clientY, true);
+  }
+
+  function onTouchStart(e){
+    if(!document.body.classList.contains('unlocked')) return;
+    var t = getTouchPoint(e);
+    if(!t) return;
+    touchActive = true;
+    document.body.classList.add('touch-active');
+    updatePointer(t.clientX, t.clientY, true);
+  }
+
+  function onTouchMove(e){
+    if(!document.body.classList.contains('unlocked')) return;
+    var t = getTouchPoint(e);
+    if(!t) return;
+    touchActive = true;
+    document.body.classList.add('touch-active');
+    updatePointer(t.clientX, t.clientY, true);
+  }
+
+  function onTouchEnd(){
+    touchActive = false;
+    document.body.classList.remove('touch-active');
+  }
+
+  function bindSectionPointer(sec){
+    function setLocal(x, y){
+      var r = sec.getBoundingClientRect();
+      var lx = ((x - r.left) / r.width * 100) + '%';
+      var ly = ((y - r.top) / r.height * 100) + '%';
+      sec.style.setProperty('--local-x', lx);
+      sec.style.setProperty('--local-y', ly);
+    }
+    sec.addEventListener('mousemove', function(e){ setLocal(e.clientX, e.clientY); });
+    sec.addEventListener('touchstart', function(e){
+      var t = getTouchPoint(e);
+      if(t) setLocal(t.clientX, t.clientY);
+    }, { passive: true });
+    sec.addEventListener('touchmove', function(e){
+      var t = getTouchPoint(e);
+      if(t) setLocal(t.clientX, t.clientY);
+    }, { passive: true });
+  }
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseenter', onMouseMove);
+  document.addEventListener('touchstart', onTouchStart, { passive: true });
+  document.addEventListener('touchmove', onTouchMove, { passive: true });
+  document.addEventListener('touchend', onTouchEnd, { passive: true });
+  document.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+  var sections = document.querySelectorAll('.section');
+  for(var s = 0; s < sections.length; s++){ bindSectionPointer(sections[s]); }
 })();
 
 /* ---------- Floating hearts & stars (after unlock) ---------- */
@@ -1278,15 +1371,6 @@ function spinWheel(){
 }
 
 /* ---------- Playlist (YouTube) ---------- */
-var songs = [
-  { title: 'Tum Hi Ho', artist: 'Arijit Singh — Aashiqui 2', genre: 'Bollywood', id: 'fsiPzT50ZiM' },
-  { title: 'Raabta', artist: 'Arijit Singh, Nikhita Gandhi', genre: 'Bollywood', id: 'v4421pPhCdI' },
-  { title: 'Tera Ban Jaunga', artist: 'Akhil Sachdeva, Tulsi Kumar — Kabir Singh', genre: 'Bollywood', id: 'mQiiw7uRngk' },
-  { title: 'Stay With Me', artist: 'Chanyeol, Punch — Goblin OST', genre: 'Korean', id: 'pcKR0LPwoYs' },
-  { title: 'You Are My Everything', artist: 'Gummy — Descendants of the Sun OST', genre: 'Korean', id: '5GYOf8NqFRk' },
-  { title: 'Beautiful', artist: 'Crush — Goblin OST', genre: 'Korean', id: '6SwQYUk-Fkc' }
-];
-
 function shuffle(arr){
   for(var i = arr.length - 1; i > 0; i--){
     var j = Math.floor(Math.random() * (i + 1));
@@ -1300,12 +1384,40 @@ var currentSongIndex = 0;
 var ytPlayer = null;
 var isSongPlaying = false;
 var progressPoll = null;
+var errorSkipCount = 0;
+
+function isFullscreen(){
+  return !!(document.fullscreenElement || document.webkitFullscreenElement ||
+    document.mozFullScreenElement || document.msFullscreenElement);
+}
+
+function updateFsButton(){
+  var fsBtn = document.getElementById('fsBtn');
+  if(!fsBtn) return;
+  if(isFullscreen()){
+    fsBtn.innerHTML = '&#10697;';
+    fsBtn.title = 'Exit Fullscreen';
+  } else {
+    fsBtn.innerHTML = '&#9974;';
+    fsBtn.title = 'Fullscreen';
+  }
+}
+
+function exitFullscreenMode(){
+  try {
+    if(document.exitFullscreen){ document.exitFullscreen(); }
+    else if(document.webkitExitFullscreen){ document.webkitExitFullscreen(); }
+    else if(document.mozCancelFullScreen){ document.mozCancelFullScreen(); }
+    else if(document.msExitFullscreen){ document.msExitFullscreen(); }
+  } catch(e) {}
+}
 
 function updateTrackDisplay(){
   var s = songs[currentSongIndex];
   document.getElementById('song-genre').textContent = s.genre;
   document.getElementById('song-title').textContent = s.title;
   document.getElementById('song-artist').textContent = s.artist;
+  document.getElementById('song-count').textContent = (currentSongIndex + 1) + ' / ' + songs.length;
 }
 updateTrackDisplay();
 
@@ -1314,14 +1426,21 @@ function onYouTubeIframeAPIReady(){
     height: '100%',
     width: '100%',
     videoId: songs[currentSongIndex].id,
-    playerVars: { rel: 0, modestbranding: 1, fs: 1 },
-    events: { onStateChange: onPlayerStateChange }
+    playerVars: { rel: 0, modestbranding: 1, fs: 1, playsinline: 1 },
+    events: { onStateChange: onPlayerStateChange, onError: onPlayerError }
   });
+}
+
+function onPlayerError(e){
+  if(errorSkipCount >= songs.length) return;
+  errorSkipCount++;
+  nextSong(true);
 }
 
 function onPlayerStateChange(e){
   if(e.data === YT.PlayerState.PLAYING){
     isSongPlaying = true;
+    errorSkipCount = 0;
     document.getElementById('playBtn').innerHTML = '&#10074;&#10074;';
     startProgressPoll();
   } else if(e.data === YT.PlayerState.PAUSED){
@@ -1354,32 +1473,24 @@ function togglePlay(){
 
 function toggleFullscreen(){
   var wrap = document.getElementById('ytWrap');
-  var fsBtn = document.querySelector('.fs-btn');
   if(!wrap) return;
   try {
-    var active = document.fullscreenElement || document.webkitFullscreenElement;
-    if(active){
-      if(document.exitFullscreen){ document.exitFullscreen(); }
-      else if(document.webkitExitFullscreen){ document.webkitExitFullscreen(); }
-      if(fsBtn) fsBtn.innerHTML = '&#9974;';
+    if(isFullscreen()){
+      exitFullscreenMode();
     } else {
-      if(wrap.requestFullscreen){ wrap.requestFullscreen(); }
-      else if(wrap.webkitRequestFullscreen){ wrap.webkitRequestFullscreen(); }
-      if(fsBtn) fsBtn.innerHTML = '&#10697;';
+      var req = wrap.requestFullscreen || wrap.webkitRequestFullscreen ||
+        wrap.mozRequestFullScreen || wrap.msRequestFullscreen;
+      if(req){ req.call(wrap); }
     }
   } catch(e) {}
 }
 
-document.addEventListener('fullscreenchange', function(){
-  var fsBtn = document.querySelector('.fs-btn');
-  if(!document.fullscreenElement && fsBtn){ fsBtn.innerHTML = '&#9974;'; }
-});
-document.addEventListener('webkitfullscreenchange', function(){
-  var fsBtn = document.querySelector('.fs-btn');
-  if(!document.webkitFullscreenElement && fsBtn){ fsBtn.innerHTML = '&#9974;'; }
+['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(evt){
+  document.addEventListener(evt, updateFsButton);
 });
 
-function nextSong(){
+function nextSong(fromError){
+  if(!fromError) errorSkipCount = 0;
   currentSongIndex++;
   if(currentSongIndex >= songs.length){
     currentSongIndex = 0;
