@@ -175,8 +175,17 @@
     opacity: 0; transition: opacity 0.3s;
   }
   .lock-error.show { opacity: 1; }
-  .lock-hint {
-    font-size: 12px; color: #8a6a52; font-style: italic; margin-top: 4px;
+  .lock-quote {
+    margin-top: 20px; padding: 0 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(13px, 3vw, 15px);
+    font-style: italic; line-height: 1.85;
+    color: rgba(243,230,220,0.65);
+  }
+  .lock-quote em {
+    font-style: normal;
+    color: var(--rose);
+    text-shadow: 0 0 14px rgba(217,138,148,0.2);
   }
   .heart-locker.shake .heart-lock-wrap {
     animation: lockShake 0.5s ease;
@@ -593,6 +602,21 @@
     overflow: hidden; border: 1px solid rgba(212,175,55,0.28);
     flex-shrink: 0; background: #000;
   }
+  .yt-wrap:fullscreen,
+  .yt-wrap:-webkit-full-screen {
+    width: 100vw; height: 100vh; max-width: none;
+    border-radius: 0; border: none; aspect-ratio: auto;
+    display: flex; align-items: center; justify-content: center;
+    background: #000;
+  }
+  .yt-wrap:fullscreen #yt-player,
+  .yt-wrap:-webkit-full-screen #yt-player {
+    width: 100% !important; height: 100% !important;
+  }
+  .yt-wrap:fullscreen iframe,
+  .yt-wrap:-webkit-full-screen iframe {
+    width: 100% !important; height: 100% !important;
+  }
   #yt-player, .yt-wrap iframe { width: 100% !important; height: 100% !important; }
   .track-info { flex: 1; min-width: 0; }
   .track-genre {
@@ -693,7 +717,7 @@
       <input class="pin-box" type="password" inputmode="numeric" maxlength="1" data-idx="3" autocomplete="off">
     </div>
     <p class="lock-error" id="lockError">That code doesn&rsquo;t open this heart&hellip; try again &#128148;</p>
-    <p class="lock-hint">Hint: the day we said forever &mdash; 26 &amp; 12</p>
+    <p class="lock-quote">&ldquo;Only the one who can unlock this heart<br><em>knows us better than the world ever could.</em>&rdquo;</p>
   </div>
 </div>
 <div class="unlock-burst" id="unlockBurst"></div>
@@ -795,7 +819,7 @@
 <div class="section">
   <div class="section-title"><span class="flourish">&#10087;</span><span class="title-text">Our Playlist</span><span class="flourish">&#10087;</span></div>
   <div class="music-player">
-    <div class="yt-wrap"><div id="yt-player"></div></div>
+    <div class="yt-wrap" id="ytWrap"><div id="yt-player"></div></div>
     <div class="track-info">
       <div class="track-genre" id="song-genre">Bollywood</div>
       <div class="track-title" id="song-title">&nbsp;</div>
@@ -1290,7 +1314,7 @@ function onYouTubeIframeAPIReady(){
     height: '100%',
     width: '100%',
     videoId: songs[currentSongIndex].id,
-    playerVars: { rel: 0, modestbranding: 1 },
+    playerVars: { rel: 0, modestbranding: 1, fs: 1 },
     events: { onStateChange: onPlayerStateChange }
   });
 }
@@ -1329,14 +1353,31 @@ function togglePlay(){
 }
 
 function toggleFullscreen(){
+  var wrap = document.getElementById('ytWrap');
+  var fsBtn = document.querySelector('.fs-btn');
+  if(!wrap) return;
   try {
-    var iframe = document.querySelector('#yt-player iframe');
-    if(!iframe) return;
-    if(iframe.requestFullscreen){ iframe.requestFullscreen(); }
-    else if(iframe.webkitRequestFullscreen){ iframe.webkitRequestFullscreen(); }
-    else if(iframe.msRequestFullscreen){ iframe.msRequestFullscreen(); }
+    var active = document.fullscreenElement || document.webkitFullscreenElement;
+    if(active){
+      if(document.exitFullscreen){ document.exitFullscreen(); }
+      else if(document.webkitExitFullscreen){ document.webkitExitFullscreen(); }
+      if(fsBtn) fsBtn.innerHTML = '&#9974;';
+    } else {
+      if(wrap.requestFullscreen){ wrap.requestFullscreen(); }
+      else if(wrap.webkitRequestFullscreen){ wrap.webkitRequestFullscreen(); }
+      if(fsBtn) fsBtn.innerHTML = '&#10697;';
+    }
   } catch(e) {}
 }
+
+document.addEventListener('fullscreenchange', function(){
+  var fsBtn = document.querySelector('.fs-btn');
+  if(!document.fullscreenElement && fsBtn){ fsBtn.innerHTML = '&#9974;'; }
+});
+document.addEventListener('webkitfullscreenchange', function(){
+  var fsBtn = document.querySelector('.fs-btn');
+  if(!document.webkitFullscreenElement && fsBtn){ fsBtn.innerHTML = '&#9974;'; }
+});
 
 function nextSong(){
   currentSongIndex++;
