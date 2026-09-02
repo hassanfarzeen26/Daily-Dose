@@ -59,12 +59,9 @@
     border-radius: 20px; padding: 24px;
     border: 1px solid rgba(212,175,55,0.1);
     position: relative; z-index: 1;
-    opacity: 1;
-    animation: fadeIn 0.6s ease-out;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
   }
   .section-title {
     font-family: 'Playfair Display', serif;
@@ -277,22 +274,6 @@
 </head>
 <body>
 
-<script>
-(function(){
-  var hearts = ['\u2764\uFE0F','\uD83D\uDC95','\uD83D\uDC96','\uD83D\uDC97','\uD83D\uDC9D','\uD83C\uDF39','\u2728'];
-  for(var i=0; i<12; i++){
-    var h = document.createElement('div');
-    h.className = 'heart';
-    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-    h.style.left = Math.random()*100 + 'vw';
-    h.style.animationDelay = Math.random()*10 + 's';
-    h.style.animationDuration = (8+Math.random()*6) + 's';
-    h.style.fontSize = (12+Math.random()*14) + 'px';
-    document.body.appendChild(h);
-  }
-})();
-</script>
-
 <div class="hero">
   <h1>Forever Yours</h1>
   <p class="subtitle">A Love That Grows Every Day</p>
@@ -327,8 +308,10 @@
   <h2 class="section-title">Daily Dose of Love</h2>
   <div class="daily-content">
     <span class="content-type-badge" id="content-badge">Today's Poetry</span>
-    <div id="daily-text"></div>
-    <p class="poem-author" id="daily-author"></p>
+    <div id="daily-text">
+      <div class="poem-text">Tum meri aankhon mein base ho,<br>Tum mere dil ki dhadkan ho,<br>Tumhari mohabbat hi mera imaan hai,<br>Tumhare bagair main adhoora hoon.</div>
+    </div>
+    <p class="poem-author" id="daily-author">- Dedicated to My Soulmate</p>
     <button class="dedicate-btn" onclick="nextContent()">Next Dedication</button>
   </div>
 </div>
@@ -353,7 +336,7 @@
 
 <div class="section">
   <h2 class="section-title">My Heart Speaks</h2>
-  <div class="love-message" id="love-message"></div>
+  <div class="love-message" id="love-message">You are the most beautiful chapter in the story of my life.</div>
   <div class="love-counter">
     <div class="love-stat"><div class="big">&infin;</div><div class="small">Memories</div></div>
     <div class="love-stat"><div class="big">1000+</div><div class="small">Reasons I Love You</div></div>
@@ -367,7 +350,7 @@
     <button class="play-btn" id="playBtn" onclick="togglePlay()">&#9654;</button>
     <div class="track-info">
       <div class="track-title" id="song-title">Tum Hi Ho</div>
-      <div class="track-artist" id="song-artist">Arijit Singh &mdash; Dedicated with Love</div>
+      <div class="track-artist" id="song-artist">Arijit Singh - Dedicated with Love</div>
       <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
     </div>
   </div>
@@ -378,62 +361,80 @@
 
 <div class="footer">
   <p>Made with <span class="heart-beat">&#128150;</span> for the love of my life</p>
-  <p style="margin-top:6px; font-size:11px; opacity:0.6;">hassanfarzeen26 &mdash; Forever &amp; Always</p>
+  <p style="margin-top:6px; font-size:11px; opacity:0.6;">hassanfarzeen26 - Forever &amp; Always</p>
 </div>
 
 <script>
+(function(){
+  var hearts = ['\u2764\uFE0F','\uD83D\uDC95','\uD83D\uDC96','\uD83D\uDC97','\uD83D\uDC9D','\uD83C\uDF39','\u2728'];
+  for(var i=0; i<12; i++){
+    var h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.animationDelay = Math.random()*10 + 's';
+    h.style.animationDuration = (8+Math.random()*6) + 's';
+    h.style.fontSize = (12+Math.random()*14) + 'px';
+    document.body.appendChild(h);
+  }
+})();
+
 var weddingDate = new Date('2024-12-26T00:00:00');
 
 function pad(n){ return n < 10 ? '0' + n : n; }
 
 function updateTogether(){
-  var now = new Date();
-  var diff = now - weddingDate;
-  if(diff < 0) diff = 0;
-  
-  var totalSeconds = Math.floor(diff / 1000);
-  var totalMinutes = Math.floor(totalSeconds / 60);
-  var totalHours = Math.floor(totalMinutes / 60);
-  var totalDays = Math.floor(totalHours / 24);
-  var totalWeeks = Math.floor(totalDays / 7);
-  
-  var years = now.getFullYear() - weddingDate.getFullYear();
-  var months = now.getMonth() - weddingDate.getMonth();
-  var days = now.getDate() - weddingDate.getDate();
-  
-  if(days < 0){
-    months--;
-    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-  }
-  if(months < 0){
-    years--;
-    months += 12;
-  }
-  
-  document.getElementById('t-years').textContent = years;
-  document.getElementById('t-months').textContent = months;
-  document.getElementById('t-weeks').textContent = totalWeeks;
-  document.getElementById('t-days').textContent = totalDays;
-  document.getElementById('t-hours').textContent = totalHours;
-  document.getElementById('t-minutes').textContent = totalMinutes;
-  document.getElementById('t-seconds').textContent = totalSeconds.toLocaleString() + ' seconds of pure love';
+  try {
+    var now = new Date();
+    var diff = now - weddingDate;
+    if(diff < 0) diff = 0;
+    
+    var totalSeconds = Math.floor(diff / 1000);
+    var totalMinutes = Math.floor(totalSeconds / 60);
+    var totalHours = Math.floor(totalMinutes / 60);
+    var totalDays = Math.floor(totalHours / 24);
+    var totalWeeks = Math.floor(totalDays / 7);
+    
+    var years = now.getFullYear() - weddingDate.getFullYear();
+    var months = now.getMonth() - weddingDate.getMonth();
+    var days = now.getDate() - weddingDate.getDate();
+    
+    if(days < 0){
+      months--;
+      days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    }
+    if(months < 0){
+      years--;
+      months += 12;
+    }
+    
+    document.getElementById('t-years').textContent = years;
+    document.getElementById('t-months').textContent = months;
+    document.getElementById('t-weeks').textContent = totalWeeks;
+    document.getElementById('t-days').textContent = totalDays;
+    document.getElementById('t-hours').textContent = totalHours;
+    document.getElementById('t-minutes').textContent = totalMinutes;
+    document.getElementById('t-seconds').textContent = totalSeconds.toLocaleString() + ' seconds of pure love';
+  } catch(e) {}
 }
 
 function updateCountdown(){
-  var now = new Date();
-  var next = new Date(now.getFullYear(), 11, 26);
-  if(now > next) next = new Date(now.getFullYear() + 1, 11, 26);
-  
-  var which = next.getFullYear() - weddingDate.getFullYear();
-  var suffix = which === 1 ? 'st' : which === 2 ? 'nd' : which === 3 ? 'rd' : 'th';
-  document.getElementById('anniversary-label').textContent = 
-    'Counting down to our ' + which + suffix + ' Anniversary';
-  
-  var diff = next - now;
-  document.getElementById('cd-days').textContent = pad(Math.floor(diff / (1000 * 60 * 60 * 24)));
-  document.getElementById('cd-hours').textContent = pad(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-  document.getElementById('cd-minutes').textContent = pad(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
-  document.getElementById('cd-seconds').textContent = pad(Math.floor((diff % (1000 * 60)) / 1000));
+  try {
+    var now = new Date();
+    var next = new Date(now.getFullYear(), 11, 26);
+    if(now > next) next = new Date(now.getFullYear() + 1, 11, 26);
+    
+    var which = next.getFullYear() - weddingDate.getFullYear();
+    var suffix = which === 1 ? 'st' : which === 2 ? 'nd' : which === 3 ? 'rd' : 'th';
+    document.getElementById('anniversary-label').textContent = 
+      'Counting down to our ' + which + suffix + ' Anniversary';
+    
+    var diff = next - now;
+    document.getElementById('cd-days').textContent = pad(Math.floor(diff / (1000 * 60 * 60 * 24)));
+    document.getElementById('cd-hours').textContent = pad(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+    document.getElementById('cd-minutes').textContent = pad(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
+    document.getElementById('cd-seconds').textContent = pad(Math.floor((diff % (1000 * 60)) / 1000));
+  } catch(e) {}
 }
 
 var contents = [
@@ -478,12 +479,14 @@ var contents = [
 var currentContent = Math.floor(Math.random() * contents.length);
 
 function renderContent(){
-  var c = contents[currentContent];
-  document.getElementById('content-badge').textContent = c.badge;
-  var textDiv = document.getElementById('daily-text');
-  var cls = (c.type.indexOf('Urdu') !== -1) ? 'poem-text' : 'poem-english';
-  textDiv.innerHTML = '<div class="' + cls + '">' + c.text + '</div>';
-  document.getElementById('daily-author').textContent = c.author;
+  try {
+    var c = contents[currentContent];
+    document.getElementById('content-badge').textContent = c.badge;
+    var textDiv = document.getElementById('daily-text');
+    var cls = (c.type.indexOf('Urdu') !== -1) ? 'poem-text' : 'poem-english';
+    textDiv.innerHTML = '<div class="' + cls + '">' + c.text + '</div>';
+    document.getElementById('daily-author').textContent = c.author;
+  } catch(e) {}
 }
 
 function nextContent(){
@@ -505,51 +508,47 @@ var loveMessages = [
   'Every love story is beautiful, but ours is my favorite.',
   'I fall in love with you a little more every single day.'
 ];
-document.getElementById('love-message').textContent = loveMessages[today % loveMessages.length];
+try {
+  document.getElementById('love-message').textContent = loveMessages[today % loveMessages.length];
+} catch(e) {}
 
 var currentFilter = 'normal';
 function setFilter(btn, filter){
-  currentFilter = filter;
-  var btns = document.querySelectorAll('.filter-btn');
-  for(var i = 0; i < btns.length; i++){
-    btns[i].classList.remove('active');
-  }
-  btn.classList.add('active');
-  var items = document.querySelectorAll('.gallery-item');
-  for(var i = 0; i < items.length; i++){
-    items[i].className = 'gallery-item ' + filter;
-  }
+  try {
+    currentFilter = filter;
+    var btns = document.querySelectorAll('.filter-btn');
+    for(var i = 0; i < btns.length; i++){
+      btns[i].classList.remove('active');
+    }
+    btn.classList.add('active');
+    var items = document.querySelectorAll('.gallery-item');
+    for(var i = 0; i < items.length; i++){
+      items[i].className = 'gallery-item ' + filter;
+    }
+  } catch(e) {}
 }
 
 function handleUpload(e){
-  var files = e.target.files;
-  var gallery = document.getElementById('gallery');
-  if(gallery.querySelector('.upload-area')){
-    gallery.innerHTML = '';
-  }
-  for(var i = 0; i < files.length; i++){
-    (function(file){
-      var reader = new FileReader();
-      reader.onload = function(evt){
-        var div = document.createElement('div');
-        div.className = 'gallery-item ' + currentFilter;
-        div.innerHTML = '<img src="' + evt.target.result + '" alt="Memory">';
-        gallery.appendChild(div);
-      };
-      reader.readAsDataURL(file);
-    })(files[i]);
-  }
-  var uploadArea = document.createElement('div');
-  uploadArea.className = 'upload-area';
-  uploadArea.innerHTML = "<div style='font-size:28px;margin-bottom:6px;'>&#128247;</div><div>Click to upload more</div>";
-  uploadArea.onclick = function(){
-    document.getElementById('fileInput').click();
-  };
-  gallery.appendChild(uploadArea);
-}
-
-var songs = [
-  { title: 'Tum Hi Ho', artist: 'Arijit Singh', lyrics: '"Teri meri, meri teri prem kahani hai mushkil..."' },
-  { title: 'Perfect', artist: 'Ed Sheeran', lyrics: '"I found a love for me, darling just dive right in..."' },
-  { title: 'Mere Haath Mein', artist: 'Sonu Nigam', lyrics: '"Mere haath mein tera haath ho..."' },
-  { title: 'All of Me', artist: '
+  try {
+    var files = e.target.files;
+    var gallery = document.getElementById('gallery');
+    if(gallery.querySelector('.upload-area')){
+      gallery.innerHTML = '';
+    }
+    for(var i = 0; i < files.length; i++){
+      (function(file){
+        var reader = new FileReader();
+        reader.onload = function(evt){
+          var div = document.createElement('div');
+          div.className = 'gallery-item ' + currentFilter;
+          div.innerHTML = '<img src="' + evt.target.result + '" alt="Memory">';
+          gallery.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+      })(files[i]);
+    }
+    var uploadArea = document.createElement('div');
+    uploadArea.className = 'upload-area';
+    uploadArea.innerHTML = "<div style='font-size:28px;margin-bottom:6px;'>&#128247;</div><div>Click to upload more</div>";
+    uploadArea.onclick = function(){
+      document.getElementById('
